@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Collin Tice</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body { margin:0; font-family:Arial,sans-serif; background:#f4f6f8; }
+header { background:#1f2933; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; }
+.site-name { font-size:22px; font-weight:bold; }
+nav button { background:none; border:none; color:white; margin-left:18px; font-size:16px; cursor:pointer; }
+nav button:hover { text-decoration:underline; }
+.container { padding:30px; }
+.section { display:none; }
+.section.active { display:block; }
+.box { background:white; padding:20px; margin-bottom:20px; border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.1); }
+textarea { width:100%; resize:none; overflow:hidden; min-height:80px; padding:10px; margin-top:10px; border-radius:4px; border:1px solid #ccc; }
+.home-grid { display:grid; grid-template-columns:1fr 2fr; gap:20px; }
+.right-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.image-preview { max-width:100%; margin-top:10px; border-radius:6px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="site-name">Collin Tice</div>
+  <nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('education')">Education</button>
+    <button onclick="showSection('work')">Work Experience</button>
+    <button onclick="showSection('leadership')">Leadership Positions</button>
+    <button onclick="showSection('volunteer')">Volunteer Service</button>
+    <button onclick="showSection('projects')">Projects & Awards</button>
+  </nav>
+</header>
+
+<div class="container">
+
+<div id="home" class="section active">
+  <div class="home-grid">
+    <div class="box">
+      <h3>Professional Headshot</h3>
+      <input type="file" accept="image/*" onchange="saveImage(this,'headshot')">
+      <img id="headshot" class="image-preview">
+    </div>
+    <div>
+      <div class="box"><h3>Professional Summary</h3><textarea data-key="summary"></textarea></div>
+      <div class="right-grid">
+        <div class="box"><h3>Skills</h3><textarea data-key="skills"></textarea></div>
+        <div class="box"><h3>Links</h3><textarea data-key="links"></textarea></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="education" class="section">
+  <div class="box"><h2>Education</h2><textarea data-key="education"></textarea></div>
+  <div class="box">
+    <h2>Certifications</h2>
+    <textarea data-key="certifications"></textarea>
+    <input type="file" accept="image/*" onchange="saveImage(this,'certImage')">
+    <img id="certImage" class="image-preview">
+  </div>
+</div>
+
+<div id="work" class="section"><div class="box"><h2>Work Experience</h2><textarea data-key="work"></textarea></div></div>
+<div id="leadership" class="section"><div class="box"><h2>Leadership Positions</h2><textarea data-key="leadership"></textarea></div></div>
+<div id="volunteer" class="section"><div class="box"><h2>Volunteer Service</h2><textarea data-key="volunteer"></textarea></div></div>
+<div id="projects" class="section">
+  <div class="box"><h2>Projects</h2><textarea data-key="projects"></textarea></div>
+  <div class="box"><h2>Awards</h2><textarea data-key="awards"></textarea></div>
+</div>
+</div>
+
+<script>
+function showSection(id){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+
+// TEXT PERSISTENCE
+document.querySelectorAll('textarea').forEach(t=>{
+  const key=t.dataset.key;
+  if(localStorage[key]) t.value=localStorage[key];
+  autoResize(t);
+  t.addEventListener('input',()=>{localStorage[key]=t.value; autoResize(t);});
+});
+
+function autoResize(el){el.style.height='auto'; el.style.height=el.scrollHeight+'px';}
+
+// IMAGE PERSISTENCE
+function saveImage(input,id){
+  const file=input.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{localStorage[id]=e.target.result; document.getElementById(id).src=e.target.result;};
+  reader.readAsDataURL(file);
+}
+
+['headshot','certImage'].forEach(id=>{ if(localStorage[id]) document.getElementById(id).src=localStorage[id]; });
+</script>
+</body>
+</html>
