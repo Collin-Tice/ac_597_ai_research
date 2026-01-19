@@ -15,10 +15,13 @@ nav button:hover { text-decoration:underline; }
 .section { display:none; }
 .section.active { display:block; }
 .box { background:white; padding:20px; margin-bottom:20px; border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.1); }
-textarea { width:100%; resize:none; overflow:hidden; min-height:80px; padding:10px; margin-top:10px; border-radius:4px; border:1px solid #ccc; }
+textarea { width:100%; resize:none; overflow:hidden; min-height:32px; padding:10px; margin-top:10px; border-radius:4px; border:1px solid #ccc; }
 .home-grid { display:grid; grid-template-columns:1fr 2fr; gap:20px; }
 .right-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
 .image-preview { max-width:100%; margin-top:10px; border-radius:6px; }
+.file-link { margin-top:10px; display:block; }
+.add-btn { margin-top:10px; padding:8px 12px; background:#1f2933; color:white; border:none; border-radius:4px; cursor:pointer; }
+.add-btn:hover { background:#374151; }
 </style>
 </head>
 <body>
@@ -54,21 +57,53 @@ textarea { width:100%; resize:none; overflow:hidden; min-height:80px; padding:10
 </div>
 
 <div id="education" class="section">
-  <div class="box"><h2>Education</h2><textarea data-key="education"></textarea></div>
+  <div class="box">
+    <h2>Education</h2>
+    <div id="education-list"></div>
+    <button class="add-btn" onclick="addEntry('education-list','education')">Add Education</button>
+  </div>
   <div class="box">
     <h2>Certifications</h2>
     <textarea data-key="certifications"></textarea>
-    <input type="file" accept="image/*" onchange="saveImage(this,'certImage')">
+    <input type="file" accept="image/*,.pdf" onchange="saveCertFile(this)">
     <img id="certImage" class="image-preview">
+    <a id="certPdf" class="file-link" target="_blank"></a>
   </div>
 </div>
 
-<div id="work" class="section"><div class="box"><h2>Work Experience</h2><textarea data-key="work"></textarea></div></div>
-<div id="leadership" class="section"><div class="box"><h2>Leadership Positions</h2><textarea data-key="leadership"></textarea></div></div>
-<div id="volunteer" class="section"><div class="box"><h2>Volunteer Service</h2><textarea data-key="volunteer"></textarea></div></div>
+<div id="work" class="section">
+  <div class="box">
+    <h2>Work Experience</h2>
+    <div id="work-list"></div>
+    <button class="add-btn" onclick="addEntry('work-list','workList')">Add Experience</button>
+  </div>
+</div>
+<div id="leadership" class="section">
+  <div class="box">
+    <h2>Leadership Positions</h2>
+    <div id="leadership-list"></div>
+    <button class="add-btn" onclick="addEntry('leadership-list','leadershipList')">Add Leadership Position</button>
+  </div>
+</div>
+<div id="volunteer" class="section">
+  <div class="box">
+    <h2>Volunteer Service</h2>
+    <div id="volunteer-list"></div>
+    <button class="add-btn" onclick="addEntry('volunteer-list','volunteerList')">Add Volunteer Service</button>
+  </div>
+</div>
 <div id="projects" class="section">
-  <div class="box"><h2>Projects</h2><textarea data-key="projects"></textarea></div>
-  <div class="box"><h2>Awards</h2><textarea data-key="awards"></textarea></div>
+  <div class="box">
+    <h2>Projects</h2>
+    <div id="projects-list"></div>
+    <button class="add-btn" onclick="addEntry('projects-list','projectsList')">Add Project</button>
+  </div>
+  <div class="box">
+    <h2>Awards</h2>
+    <div id="awards-list"></div>
+    <button class="add-btn" onclick="addEntry('awards-list','awardsList')">Add Award</button>
+  </div>
+</div>
 </div>
 </div>
 
@@ -85,16 +120,79 @@ document.querySelectorAll('textarea').forEach(t=>{
 
 function autoResize(el){el.style.height='auto'; el.style.height=el.scrollHeight+'px';}
 
-// IMAGE PERSISTENCE
-function saveImage(input,id){
+// GENERIC DYNAMIC LISTS
+function addEntry(containerId,storageKey){
+  const container=document.getElementById(containerId);
+  const textarea=document.createElement('textarea');
+  textarea.rows = 1;
+  textarea.addEventListener('input',()=>saveEntries(containerId,storageKey));
+  container.appendChild(textarea);
+}
+
+function saveEntries(containerId,storageKey){
+  const values=[...document.getElementById(containerId).children].map(t=>t.value);
+  localStorage[storageKey]=JSON.stringify(values);
+}
+
+['education','workList','leadershipList','volunteerList','projectsList','awardsList'].forEach(key=>{
+  const containerId = key === 'education' ? 'education-list' : key.replace('List','-list');
+  const container = document.getElementById(containerId);
+
+  if(localStorage[key]){
+    JSON.parse(localStorage[key]).forEach(v=>{
+      const t=document.createElement('textarea');
+      t.rows = 1;
+      t.value=v;
+      t.addEventListener('input',()=>saveEntries(containerId,key));
+      autoResize(t);
+      container.appendChild(t);
+    });
+  } else {
+    // create one empty starter box
+    const t=document.createElement('textarea');
+    t.rows = 1;
+    t.addEventListener('input',()=>saveEntries(containerId,key));
+    container.appendChild(t);
+  }
+});
+  }
+});
+
+function saveEntries(containerId,storageKey){
+  const values=[...document.getElementById(containerId).children].map(t=>t.value);
+  localStorage[storageKey]=JSON.stringify(values);
+}
+
+if(localStorage.education){
+  JSON.parse(localStorage.education).forEach(v=>{
+    const t=document.createElement('textarea'); t.value=v; document.getElementById('education-list').appendChild(t);
+  });
+}
+
+// HEADSHOT LOAD
+if(localStorage.headshot){ document.getElementById('headshot').src = localStorage.headshot; }
+
+// CERT FILE (IMAGE OR PDF)
+function saveCertFile(input){
   const file=input.files[0]; if(!file) return;
   const reader=new FileReader();
-  reader.onload=e=>{localStorage[id]=e.target.result; document.getElementById(id).src=e.target.result;};
+  reader.onload=e=>{
+    if(file.type.includes('pdf')){
+      localStorage.certPdf=e.target.result;
+      document.getElementById('certPdf').href=e.target.result;
+      document.getElementById('certPdf').textContent='View Certification (PDF)';
+    } else {
+      localStorage.certImage=e.target.result;
+      document.getElementById('certImage').src=e.target.result;
+    }
+  };
   reader.readAsDataURL(file);
 }
 
-['headshot','certImage'].forEach(id=>{ if(localStorage[id]) document.getElementById(id).src=localStorage[id]; });
+if(localStorage.certImage) document.getElementById('certImage').src=localStorage.certImage;
+if(localStorage.certPdf){ document.getElementById('certPdf').href=localStorage.certPdf; document.getElementById('certPdf').textContent='View Certification (PDF)'; }
+if(localStorage.certPdf){ document.getElementById('certPdf').href=localStorage.certPdf; document.getElementById('certPdf').textContent='View Certification (PDF)'; }
+
 </script>
 </body>
 </html>
-
