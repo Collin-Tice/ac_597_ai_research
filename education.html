@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collin Tice | Education</title>
+<style>
+body { margin:0; font-family:Arial,sans-serif; background:#f4f6f8; }
+header { background:#1f2933; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; }
+nav a { color:white; margin-left:18px; text-decoration:none; font-size:16px; }
+nav a:hover { text-decoration:underline; }
+.container { padding:30px; }
+.box { background:white; padding:20px; border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.1); max-width:800px; }
+textarea { width:100%; min-height:32px; resize:none; overflow:hidden; padding:10px; border-radius:4px; border:1px solid #ccc; }
+</style>
+</head>
+<body>
+<header>
+  <div><strong>Collin Tice</strong></div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="education.html">Education</a>
+    <a href="work.html">Work Experience</a>
+    <a href="leadership.html">Leadership</a>
+    <a href="volunteer.html">Volunteer</a>
+    <a href="projects.html">Projects & Awards</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="box">
+    <h2>Education</h2>
+    <textarea oninput="autoResize(this)"></textarea>
+  </div>
+
+  <div class="box" style="margin-top:20px;">
+    <h2>Certifications</h2>
+    <input type="file" accept="image/*,.pdf" onchange="handleFile(event)">
+    <img id="certImage">
+    <a id="certPdf" target="_blank"></a>
+  </div>
+</div>
+
+<script>
+function autoResize(el){ el.style.height='auto'; el.style.height = el.scrollHeight + 'px'; }
+
+function handleFile(event){
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = function(){
+    if(file.type.includes('pdf')){
+      document.getElementById('certPdf').href = reader.result;
+      document.getElementById('certPdf').textContent = "View Certification (PDF)";
+    } else {
+      document.getElementById('certImage').src = reader.result;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
