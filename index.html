@@ -3,54 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collin Tice | Home</title>
+<title>Collin Tice | Portfolio</title>
+
 <style>
-body { margin:0; font-family:Arial,sans-serif; background:#f4f6f8; }
-header { background:#1f2933; color:white; padding:15px 30px; display:flex; justify-content:space-between; align-items:center; }
-nav a { color:white; margin-left:18px; text-decoration:none; font-size:16px; }
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#f4f6f8;
+    color:#1f2933;
+}
+
+header {
+    background:#1f2933;
+    color:white;
+    padding:15px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+nav a {
+    color:white;
+    margin-left:20px;
+    text-decoration:none;
+    font-weight:500;
+}
+
 nav a:hover { text-decoration:underline; }
-.container { padding:30px; }
-.box { background:white; padding:20px; border-radius:6px; box-shadow:0 2px 5px rgba(0,0,0,.1); max-width:800px; }
-textarea { width:100%; min-height:32px; resize:none; overflow:hidden; padding:10px; border-radius:4px; border:1px solid #ccc; }
-img { max-width:100%; margin-top:10px; border-radius:6px; }
+
+.container {
+    max-width:1000px;
+    margin:auto;
+    padding:40px 20px;
+}
+
+.section { margin-bottom:60px; }
+
+.section h2 {
+    border-bottom:2px solid #1f2933;
+    padding-bottom:8px;
+    margin-bottom:20px;
+}
+
+.card {
+    background:white;
+    padding:20px;
+    border-radius:8px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+    margin-bottom:20px;
+}
+
+.headshot {
+    width:200px;
+    border-radius:8px;
+}
+
+.home-flex {
+    display:flex;
+    gap:40px;
+    align-items:center;
+    flex-wrap:wrap;
+}
 </style>
 </head>
+
 <body>
+
 <header>
-  <div><strong>Collin Tice</strong></div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="education.html">Education</a>
-    <a href="work.html">Work Experience</a>
-    <a href="leadership.html">Leadership</a>
-    <a href="volunteer.html">Volunteer</a>
-    <a href="projects.html">Projects & Awards</a>
-  </nav>
+    <div><strong>Collin M. Tice</strong></div>
+    <nav>
+        <a href="#education">Education</a>
+        <a href="#work">Work Experience</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#volunteer">Volunteer</a>
+        <a href="#honors">Honors</a>
+    </nav>
 </header>
 
 <div class="container">
-  <div class="box">
-    <h2>Professional Headshot</h2>
-    <input type="file" accept="image/*" onchange="previewImage(event)">
-    <img id="preview">
-  </div>
 
-  <div class="box" style="margin-top:20px;">
-    <h2>Professional Summary</h2>
-    <textarea oninput="autoResize(this)"></textarea>
-  </div>
+<!-- HOME -->
+<div class="section">
+    <div class="home-flex">
+        <img src="headshot.png" alt="Collin Tice Headshot" class="headshot">
+
+        <div>
+            <h1>Collin M. Tice</h1>
+            <p><strong>Phone:</strong> (615) 495-8075</p>
+            <p><strong>Email:</strong> cmtice@crimson.ua.edu</p>
+            <p><strong>Major:</strong> Accounting</p>
+            <p><strong>Minor:</strong> Professional Accounting</p>
+            <p><strong>GPA:</strong> 4.0 / 4.0</p>
+        </div>
+    </div>
 </div>
 
-<script>
-function autoResize(el){ el.style.height='auto'; el.style.height = el.scrollHeight + 'px'; }
+<!-- EDUCATION -->
+<div class="section" id="education">
+<h2>Education</h2>
+<div class="card">
+<p><strong>The University of Alabama</strong>, Tuscaloosa, AL</p>
+<p>Bachelor of Science in Commerce and Business Administration – December 2024</p>
+<p>Expected Graduation with 150 Hours: May 2026</p>
+<p>Major GPA: 4.0 / 4.0</p>
+<p><strong>Computer Skills:</strong> Microsoft Office, Alteryx, Tableau</p>
+<p><strong>Programming:</strong> Intermediate Python</p>
+</div>
+</div>
 
-function previewImage(event){
-  const reader = new FileReader();
-  reader.onload = function(){
-    document.getElementById('preview').src = reader.result;
-  };
-  reader.readAsDataURL(event.target.files[0]);
-}
-</script>
+<!-- WORK EXPERIENCE -->
+<div class="section" id="work">
+<h2>Work Experience</h2>
+
+<div class="card">
+<h3>Audit Staff – Crowe LLP | Washington, DC</h3>
+<p><em>June 2025 – August 2025</em></p>
+<ul>
+<li>Created firmwide training materials on new ASUs and authored the AICPA’s Introduction to Staking.</li>
+<li>Researched technical accounting guidance on digital asset topics including stablecoins.</li>
+<li>Performed participant data testing for employee benefit plan audits.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Audit Staff – Ernst & Young | Tysons, VA</h3>
+<p><em>January 2025 – March 2025</em></p>
+<ul>
+<li>Completed audit procedures for a multi-million-dollar company.</li>
+<li>Tested valuation of funds through substantive testing procedures.</li>
+<li>Analyzed client data and delivered timely insights.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Auditor – Crowe LLP | Nashville, TN</h3>
+<p><em>June 2024 – August 2024</em></p>
+<ul>
+<li>Conducted detailed financial statement testing.</li>
+<li>Researched AI applications to enhance audit efficiency.</li>
+<li>Communicated findings with clients and team members.</li>
+</ul>
+</div>
+
+</div>
+
+<!-- LEADERSHIP -->
+<div class="section" id="leadership">
+<h2>Leadership Experience</h2>
+
+<div class="card">
+<h3>Treasurer & Founder – Students in Support of First Responders</h3>
+<ul>
+<li>Founded organization to raise funds supporting first responders.</li>
+<li>Managed budgeting and fundraising decisions.</li>
+<li>Recruited members to ensure long-term sustainability.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Connections/Events Team Leader – Calvary Baptist</h3>
+<ul>
+<li>Planned and executed college ministry events.</li>
+<li>Engaged new students and expanded campus involvement.</li>
+<li>Collaborated with student leadership teams.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Counselor – CIY MIX</h3>
+<ul>
+<li>Led small group discussions during week-long retreat.</li>
+<li>Supervised and ensured safety of campers.</li>
+</ul>
+</div>
+
+</div>
+
+<!-- VOLUNTEER -->
+<div class="section" id="volunteer">
+<h2>Volunteer Service</h2>
+<div class="card">
+<ul>
+<li>Volunteer Firefighter – SD Allen</li>
+<li>Culverhouse LIFT</li>
+<li>Crossroads Missions</li>
+<li>Selma Tornado Relief</li>
+<li>Kids Club</li>
+</ul>
+</div>
+</div>
+
+<!-- HONORS -->
+<div class="section" id="honors">
+<h2>Honors & Involvement</h2>
+<div class="card">
+<ul>
+<li>University of Alabama Honors College</li>
+<li>Beta Alpha Psi Member</li>
+<li>President’s List</li>
+<li>National Sojourners Award</li>
+<li>Active in Intramural Sports</li>
+</ul>
+</div>
+</div>
+
+</div>
 </body>
 </html>
